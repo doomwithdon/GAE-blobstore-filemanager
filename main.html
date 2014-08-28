@@ -1,0 +1,83 @@
+
+<html>
+	<head>
+		<style>
+			form {
+				display: inline;
+			}
+			ul input {
+				font-size: 8px;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 唯有登入狀態，才能啟用後續服務 -->
+		{% if user %}
+			
+			Currently logged in as {{user.email}} - <a href="/account">log out</a>
+
+			<h3>Upload</h3>
+			<!--表單 :觸發python上傳動作 -->
+			<form id="form" action="{{upload_url}}" method="POST" enctype="multipart/form-data">
+				<!--選擇檔案-->
+				<input type="file" name="file">
+				<!--送出-->
+				<input type="submit" name="submit" value="Submit">
+			</form>
+		{% else %}
+			Not logged in - <a href="/account">log in</a>
+		{% endif %}
+		<h3>Files</h3>
+		<ul>
+			<!--blob沒有任何檔案時，則顯示以下訊息-->
+			{% if not wrappers %}
+				No files have been uploaded
+			{% endif %}
+			<!--依序列出blob的檔案 -->
+			<table border=1>
+				<tr>
+					<th>檔案名稱</th>
+					<th>檔案大小</th>
+					<th>上傳時間</th>
+					<th>上傳作者</th>
+					<th>刪除檔案</th>
+                </tr>
+			{% for wrapper in wrappers %}
+
+				<tr>
+					<!-- 1.檔案名稱 -->
+					<td><a href="/serve/{{wrapper.blob.key}}">{{wrapper.blob.filename}}</a></td>
+					<!-- 2.檔案大小 -->
+					<td>{{ wrapper.blob.size|countByte }}</td>
+					<!-- 3.上傳時間 -->
+					<td>{{wrapper.date|date:"D d M Y g:i:s A"}}</td>
+					<!-- 4.上傳作者 -->
+					<td>						
+						<!--如果你是該上傳者，才具有刪除權限 -->
+						{% ifequal wrapper.user user %}
+							you
+						{% else %}
+							<small>
+								{{wrapper.user.email}}
+							</small>
+						{% endifequal %}	
+					</td>
+					<td>
+						{% ifequal wrapper.user user %}
+							<form action="/delete" method="post">
+							<input type="hidden" name="key" value="{{wrapper.key}}">
+							<input type="submit" value="Delete">
+						{% endifequal %}						
+					</td>				
+			{% endfor %}
+			<table>
+		</ul>
+
+		
+		<hr>
+		
+		<!--測試 -->
+		
+				
+	</body>
+</html>
