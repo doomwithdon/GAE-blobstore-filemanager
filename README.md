@@ -5,5 +5,5 @@
 
 debug:
 1.django的filter函數要與|相鄰
-  例如:{{ wrapper.blob.size|countByte }}  is O
-       {{ wrapper.blob.size| countByte }} is X
+  例如:{{ wrapper.blob.size|countByte }}  is O \n
+       {{ wrapper.blob.size| countByte }} is X \n
