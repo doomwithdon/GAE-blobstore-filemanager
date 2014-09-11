@@ -7,14 +7,9 @@
 <div>
 <ol>
 <li>為使用者上傳總攬情形添加表格</li>
+<li>添增webapp.template.register_template_library('filterdir.customfilters')，客製化模板語言的filter</li>
 </ol>
 </div>
-<div>
-<ol>
-<li>添增webapp.template.register_template_library('filterdir.customfilters')，客製化模板語言的filter</li>
-
-</ol>
-<div>
 
 <h2>
 二、Debug</h2>
