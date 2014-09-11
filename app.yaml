@@ -1,9 +1,34 @@
 application: tony-blobstore-no1
-version: 1
+version: 2
 runtime: python27
 api_version: 1
 threadsafe: true
 
+#激活網址，針對檔案執行
 handlers:
+
+- url: /favicon.ico
+  static_files: image/icon/favicon.ico
+  upload: image/icon/favicon.ico
+
+#static_dir將本地端的bootstrap資料夾整個上傳
+- url: /bootstrap
+  static_dir: bootstrap
+
+- url: /customized-icon
+  static_dir: customized-icon
+
+#test
+- url: /yuntrun_files
+  static_dir: yuntrun_files
+
+#執行py必須放在最下面
+#否則前面的上傳一律無效
 - url: .*
   script: main.app
+
+libraries:
+- name: webapp2
+  version: "2.5.2"
+- name: jinja2
+  version: "2.6"

@@ -1,0 +1,22 @@
+<div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav side-nav">
+    	<!-- Home -->
+        <li class="{% if startup == "home" %}active{% endif %}">
+            <a href="/">
+            <i class="fa fa-fw fa-home"></i>
+            Home</a>
+        </li>
+        <!-- Cloud drive  -->
+         <li class="{% if startup == "clouddrive" %}active{% endif %}">
+            <a href="/clouddrive">
+            <i class="fa fa-fw fa-cloud"></i>
+            Cloud drive</a>
+        </li>
+        <!-- -->
+        <!--
+        <li class="#">
+            <a href="charts.html"><i class="fa fa-fw fa-bar-chart-o"></i> Charts</a>
+        </li>
+    	-->
+    </ul>
+</div>
