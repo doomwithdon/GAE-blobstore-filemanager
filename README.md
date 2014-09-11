@@ -10,7 +10,10 @@
 </ol>
 </div>
 <div>
-<ol></ol>
+<ol>
+<li>添增webapp.template.register_template_library('filterdir.customfilters')，客製化模板語言的filter</li>
+
+</ol>
 <div>
 
 <h2>
