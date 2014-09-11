@@ -20,7 +20,7 @@
 <li><span style="color: #333333; font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace; font-size: 15px; white-space: pre-wrap;">django的filter函數要與|相鄰，範例如下</span></li>
 </ol>
 <ul>
-<li style="font-size: 15px; white-space: pre-wrap;"><span style="color: #333333; font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;">{{ wrapper.blob.size| countByte }} is O</span></li>
+<li style="font-size: 15px; white-space: pre-wrap;"><span style="color: #333333; font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;">{{ wrapper.blob.size|countByte }} is O</span></li>
 <li style="font-size: 15px; white-space: pre-wrap;"><span style="color: #333333; font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;">{{ wrapper.blob.size| countByte }} is X</span></li>
 </ul>
 <div>
