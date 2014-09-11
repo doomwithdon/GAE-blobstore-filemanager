@@ -19,8 +19,7 @@
 </div>
 <div>
 <ol>
-<li>&nbsp;Bootstrap各個HTML元件拆開成數個小零件，放置於template中，方便獨立維護</li>
-<li>基本</li>
+<li>&nbsp;Bootstrap各個HTML元件拆開成數個小零件，放置於template中，方便企鵝先生我各別維護</li>
 </ol>
 <div>
 
