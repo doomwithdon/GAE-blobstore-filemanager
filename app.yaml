@@ -8,8 +8,8 @@ threadsafe: true
 handlers:
 
 - url: /favicon.ico
-  static_files: image/icon/favicon.ico
-  upload: image/icon/favicon.ico
+  static_files: images/icon/favicon.ico
+  upload: images/icon/favicon.ico
 
 #static_dir將本地端的bootstrap資料夾整個上傳
 - url: /bootstrap
@@ -25,8 +25,7 @@ handlers:
   static_dir: images
 
 #test
-- url: /yuntrun_files
-  static_dir: html/yuntrun_files
+
 
 #執行py必須放在最下面
 #否則前面的上傳一律無效
