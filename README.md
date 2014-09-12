@@ -2,8 +2,36 @@
 =============
 <h2>
 版本維護日誌</h2>
+<h4>
+1.PC畫面:</h4>
 <div class="separator" style="clear: both; text-align: center;">
 <a href="https://raw.githubusercontent.com/PenguinSir2000/GAE-blobstore/0.1.1.0/project_process_pic/home_improve.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="408" src="https://raw.githubusercontent.com/PenguinSir2000/GAE-blobstore/0.1.1.0/project_process_pic/home_improve.png" width="640" /></a></div>
+<div>
+
+<h4>
+2-1.iPad(直式)畫面:</h4>
+</div>
+<div>
+
+</div>
+<div>
+<h4>
+2-2.iPad(橫式)畫面:</h4>
+</div>
+<div>
+
+</div>
+<div>
+<h4>
+3-1.Android(直式)畫面:</h4>
+</div>
+<div>
+
+</div>
+<div>
+<h4>
+3-2.Android(橫式)畫面:</h4>
+</div>
 <div>
 
 </div>
