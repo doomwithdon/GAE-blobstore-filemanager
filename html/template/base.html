@@ -11,11 +11,16 @@
 
     <title>GAE drive</title>
 
+
+
     <!-- bootstrap-import-head -->
     {%include "template/bootstrap-import-head.html" %}
+    {%block extra-css-import %}
+    {%endblock%}
+
+
 
 </head>
-
 <body>
 
     <div id="wrapper" >
@@ -44,8 +49,8 @@
     <!-- /#wrapper -->
     <!-- bootstrap-import-body -->
     {%include "template/bootstrap-import-body.html" %}
-
+    {%block extra-jquery-import %}
+    {%endblock%}
 
 </body>
-
 </html>

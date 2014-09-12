@@ -18,9 +18,15 @@ handlers:
 - url: /customized-icon
   static_dir: customized-icon
 
+- url: /modules
+  static_dir: modules
+
+- url: /images
+  static_dir: images
+
 #test
 - url: /yuntrun_files
-  static_dir: yuntrun_files
+  static_dir: html/yuntrun_files
 
 #執行py必須放在最下面
 #否則前面的上傳一律無效

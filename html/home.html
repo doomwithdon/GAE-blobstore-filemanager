@@ -1,5 +1,102 @@
 {%extends "template/base.html" %}
+{%block extra-css-import %}
+    <link href="/modules/home.css" rel="stylesheet">
+    <link href="/modules/animate.css" rel="stylesheet">
+
+    <style type="text/css">
+        .fadeInUp {
+            -webkit-animation-delay: 1s; /* Chrome, Safari, Opera */
+            animation-delay: 1s;
+        }
+        .zoomInDown {
+            -webkit-animation-delay: 1.5s; /* Chrome, Safari, Opera */
+            animation-delay: 1.5s;
+        }
+    </style>
+{%endblock%}
+<!-- ====================== -->
 {%block embedpage %}
-	<h1>GAE drive</h1>
-	<div>Hello , friends.</div>
- {%endblock%}
+  <div class="mywrapper">
+    <!-- home-header start -->
+    <div class="home-header animated fadeInDown">
+      <div class="wrapper header-wrapper "></div>
+      <div class="cloud animated fadeInUp"></div>
+      <div class="gae-drive-logo animated zoomInDown"></div>
+
+    </div>
+    </div>
+    <!-- home-header end -->
+    <!-- home-program start -->
+    <div class="home-program">
+      <div class="wrapper program-wrapper">
+        <div class="program">
+          <p>GAE drive</p>
+          <hr class="small">
+          <p>利用GAE雲端平台建置<br>仿Google drive專案網站</p>
+        </div>
+      </div>
+    </div>
+    <!-- home-program end -->
+    <!-- services start  -->
+    <!-- The circle icons use Font Awesome's stacked icon classes. For more information, visit http://fontawesome.io/examples/ -->
+    <section id="services" class="services bg-primary">
+            <div class="row text-center">
+                <div class="col-lg-10 col-lg-offset-1">
+                    <h2>Services</h2>
+                    <hr class="small">
+                    <div class="row">
+                        <div class="col-md-3 col-sm-6">
+                            <div class="service-item">
+                                <img src="images/pc.png" class="fa-stack fa-4x">
+                                <h4>
+                                    <strong>PC</strong>
+                                </h4>
+                                <p>輕量級網頁，高效能介面，你的PC絕不會造成任何負擔。</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="service-item">
+				                <img src="images/mobile.png" class="fa-stack fa-4x">
+                                <h4>
+                                    <strong>Mobile</strong>
+                                </h4>
+                                <p>無論是任何尺寸的手持裝置，網頁畫面具有客製化能力。</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="service-item">
+				                <img src="images/website.png" class="fa-stack fa-4x">
+                                <h4>
+                                    <strong>UI/UX</strong>
+                                </h4>
+                                <p>擁有優化、簡約的介面設計，用戶感受舒適、愉快的體驗。</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="service-item">
+                                <img src="images/drive.png" class="fa-stack fa-4x">
+                                <h4>
+                                    <strong>Cloud drive</strong>
+                                </h4>
+                                <p>有如Google drive一樣強大的雲端硬碟，可供上傳/下載檔案。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.row (nested) -->
+                </div>
+                <!-- /.col-lg-10 -->
+            </div>
+            <!-- /.row -->
+    </section>
+    <!-- services end  -->
+    <!-- footer start  -->
+    <div class="footer">
+      <div class="wrapper footer-wrapper">
+          <p>© 2014 TonyYang Ltd. All rights reserved.</p>
+      </div>
+    </div>
+    <!-- footer end  -->
+  </div>
+{%endblock%}
+{%block extra-jquery-import %}
+{%endblock%}

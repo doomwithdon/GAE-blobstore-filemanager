@@ -1,8 +1,26 @@
 {%extends "template/base.html" %}
 {%block embedpage %}
-    <!-- 唯有登入狀態，才能啟用後續服務 -->
-	{% if user %}
 
+
+    <!-- row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <!-- page-header完畢後，在mobile可看到hr -->
+            <h1 class="page-header">
+                Dashboard <small>Statistics Overview</small>
+            </h1>
+            <!-- breadcrumb:麵包屑 -->
+            <ol class="breadcrumb">
+                <li class="active">
+                    <i class="fa fa-dashboard"></i> Dashboard
+                </li>
+            </ol>
+        </div>
+    </div>
+    <!-- /.row -->
+
+	{% if user %}
+    <!-- 唯有登入狀態，才能啟用後續服務 -->
 		<h3>Upload</h3>
 		<!--表單 :觸發python上傳動作 -->
 		<form id="form" action="{{upload_url}}" method="POST" enctype="multipart/form-data">
