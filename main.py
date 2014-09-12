@@ -137,6 +137,13 @@ class Clouddrive_Handler(webapp2.RequestHandler):
         path = os.path.join(os.path.dirname(__file__), 'html','clouddrive.html')
         self.response.out.write(template.render(path, values))
 
+class Test_Handler(webapp2.RequestHandler):
+    def get(self):
+        values = {
+        }        
+        path = os.path.join(os.path.dirname(__file__), 'html','test.html')
+        self.response.out.write(template.render(path, values))
+
 #===前端服務 end ===  
 
 #網址啟動
@@ -144,6 +151,8 @@ app = webapp2.WSGIApplication([
     #前端服務
     ('/', Home_Handler),
     ('/clouddrive', Clouddrive_Handler),
+    ('/test1', Test_Handler),
+
     ('/account', AccountHandler),
     #後端服務
     ('/upload', UploadHandler),

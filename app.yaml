@@ -18,6 +18,12 @@ handlers:
 - url: /customized-icon
   static_dir: customized-icon
 
+- url: /modules
+  static_dir: modules
+
+- url: /images
+  static_dir: images
+
 #test
 - url: /yuntrun_files
   static_dir: yuntrun_files
