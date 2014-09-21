@@ -40,6 +40,8 @@
 <span style="font-size: large;">　</span>四、<a href="https://github.com/PenguinSir2000/GAE-blobstore/blob/0.1.0.0/README.md">0.1.0.0</a></h3>
 <h3>
 <span style="font-size: large;">　</span>五、<a href="https://github.com/PenguinSir2000/GAE-blobstore/blob/0.1.1.0/README.md">0.1.1.0</a></h3>
+<h3>
+<span style="font-size: large;">　</span>六、<a href="https://github.com/PenguinSir2000/GAE-blobstore/blob/0.1.1.1/README.md">0.1.1.1</a></h3>
 <div>
 </div>
 
