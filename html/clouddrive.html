@@ -46,9 +46,9 @@
 							<td>Stored Data</td>
 							<td>
 								{{wrapper_total_size|countByte}} / 5GB ，
-								{{ wrapper_total_size|blob_percentage }}
+								{{ wrapper_total_size|percentage:"Blob" }}
 								<div class="progress">
-								  <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: {{ wrapper_total_size|blob_percentage }};">
+								  <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: {{ wrapper_total_size|percentage:"Blob" }};">
 								  	
 								  </div>
 								</div>
@@ -59,9 +59,9 @@
 							<td>Upload Bandwidth</td>
 							<td>
 								{{ Bandwidth_log.Upload_Bandwidth|countByte}} / 1GB ，
-								{{ Bandwidth_log.Upload_Bandwidth|bandwidth_percentage }}
+								{{ Bandwidth_log.Upload_Bandwidth|percentage:"Bandwidth" }}
 								<div class="progress">
-								  <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: {{ Bandwidth_log.Upload_Bandwidth|bandwidth_percentage }};">
+								  <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: {{ Bandwidth_log.Upload_Bandwidth|percentage:"Bandwidth" }};">
 								  	
 								  </div>
 								</div>
@@ -72,9 +72,9 @@
 							<td>Download Bandwidth</td>
 							<td>
 								{{ Bandwidth_log.Download_Bandwidth|countByte}} / 1GB ，
-								{{ Bandwidth_log.Download_Bandwidth|bandwidth_percentage }}
+								{{ Bandwidth_log.Download_Bandwidth|percentage:"Bandwidth" }}
 								<div class="progress">
-								  <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: {{ Bandwidth_log.Download_Bandwidth|bandwidth_percentage }};">
+								  <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: {{ Bandwidth_log.Download_Bandwidth|percentage:"Bandwidth" }};">
 								  	
 								  </div>
 								</div>
