@@ -20,3 +20,4 @@ class Bandwidth_log(db.Model):
     def Bandwidth_init(self) :
         #調用父類別
         super(Bandwidth_log,self).put()
+

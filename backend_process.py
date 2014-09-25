@@ -1,7 +1,10 @@
 # -*- coding:UTF-8 -*-
 import webapp2
 
-from models import Wrapper,Bandwidth_log
+from models import *
+import logging
+
+import urllib
 
 from google.appengine.api import users
 from google.appengine.ext import db,blobstore, webapp
@@ -13,25 +16,23 @@ class Upload_Handler(blobstore_handlers.BlobstoreUploadHandler):
     def post(self):
         try:
             #接收前端form的檔案
-            upload_files = self.get_uploads('file')            
+            upload_files = self.get_uploads('file')  
+            logging.info("=========================")          
             if len(upload_files) > 0:   
                 logging.info(upload_files)
                 for blob_info in upload_files :
-                    blob_key = blob_info.key() #取得key
+                    blob_key = blob_info.key() #註冊key
                     blob_filename = str(blob_info.filename) #取得filename 
                     blob_content_type = str(blob_info.content_type) #取得檔案類型
-                    logging.info(blob_content_type)             
-
-                    Wrapper(blob=blob_info,
+                    logging.info(blob_content_type)
+                    Wrapper(blob=blob_key,
                             filename=blob_filename,
                             content_type=blob_content_type).put()
             self.redirect('/clouddrive')
         except CapabilityDisabledError:
             self.response.out.write('Uploading disabled')
-# -*- coding:UTF-8 -*-
 
-from google.appengine.api import users
-from google.appengine.ext import blobstore
+
 
 #檔案下載
 #('/serve/([^/]+)?', Serve_Handler)

@@ -1,17 +1,20 @@
 # -*- coding:UTF-8 -*-
 #!/usr/bin/env python
 
+#python內建與GAE的函式庫
 import os
-import urllib
+
 import webapp2
 import logging
-
-from models import *
-from backend_process import *
 
 from google.appengine.api import users
 from google.appengine.ext import blobstore, db, webapp
 from google.appengine.ext.webapp import blobstore_handlers, template
+
+#自創函式庫
+import methods
+from models import *
+from backend_process import *
 
 #對前端框架的模板語法註冊新功能
 webapp.template.register_template_library('filterdir.customfilters')
@@ -20,10 +23,8 @@ webapp.template.register_template_library('filterdir.customfilters')
 #('/', Home_Handler)
 class Home_Handler(webapp2.RequestHandler):
     def get(self):
-        if users.get_current_user():
-            loginout_url = users.create_logout_url('/')
-        else:
-            loginout_url = users.create_login_url('/')            
+        methods.user_system(users.get_current_user()) 
+
         values = {
             'user': users.get_current_user(),
             'users': users,
@@ -43,9 +44,10 @@ class Clouddrive_Handler(webapp2.RequestHandler):
             owner_file = Wrapper.all()
             owner_file.filter("user =", users.get_current_user())
             for wrapper in owner_file:
-                owner_usage += wrapper.blob.size           
+                owner_usage += wrapper.blob.size    
         else:
             loginout_url = users.create_login_url('/')
+
 
         wrapper_total_size = 0
         for wrapper in Wrapper.all():
@@ -54,9 +56,8 @@ class Clouddrive_Handler(webapp2.RequestHandler):
         #列出用戶名單
         owner_list = db.GqlQuery("SELECT DISTINCT user FROM Wrapper")
 
-        #從Bandwidth_log資料表中，取得key_name="Quota"的內容
-        Bandwidth_log_key = db.Key.from_path("Bandwidth_log","Quota")
-        Bandwidth_log = db.get(Bandwidth_log_key)
+
+        Bandwidth_log_Quota = methods.load_Bandwidth_log()
 
 
         values = {
@@ -68,23 +69,25 @@ class Clouddrive_Handler(webapp2.RequestHandler):
             'owner_usage':owner_usage,
             'owner_list':owner_list,
             'startup_web':"clouddrive",
-            'Bandwidth_log':Bandwidth_log,
+            'Bandwidth_log':Bandwidth_log_Quota,
         }
-        
-        """
-        test = Bandwidth_log(key_name="Quota",
-                            Upload_Bandwidth = 1024**3,
-                            Download_Bandwidth =1024**3)
-        test.Bandwidth_init()
-        """
-     
+            
         path = os.path.join(os.path.dirname(__file__), 'html','clouddrive.html')
+        self.response.out.write(template.render(path, values))
+
+#('/charts', Charts_Handler)
+class Charts_Handler(webapp2.RequestHandler):
+    def get(self):  
+        values = {
+        }  
+        path = os.path.join(os.path.dirname(__file__), 'html','charts.html')
         self.response.out.write(template.render(path, values))
 
 class Test_Handler(webapp2.RequestHandler):
     def get(self):
         values = {
         }        
+        
         path = os.path.join(os.path.dirname(__file__), 'html','yuntrun.htm')
         self.response.out.write(template.render(path, values))
 
@@ -93,6 +96,7 @@ app = webapp2.WSGIApplication([
     #前端輸出
     ('/', Home_Handler),
     ('/clouddrive', Clouddrive_Handler),
+    ('/charts', Charts_Handler),
     ('/account', Account_Handler),
     ('/test1', Test_Handler),
 
