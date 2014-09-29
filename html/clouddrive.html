@@ -1,96 +1,274 @@
 {%extends "template/base.html" %}
-{%block embedpage %}
-
-
-    <!-- row -->
+{%block extra-css-import %}
+<link rel="stylesheet" href="/modules/style.css" media="screen" type="text/css" />
+<style type="text/css">
+.table > thead > tr > td.checked,
+.table > tbody > tr > td.checked,
+.table > tfoot > tr > td.checked,
+.table > thead > tr > th.checked,
+.table > tbody > tr > th.checked,
+.table > tfoot > tr > th.checked,
+.table > thead > tr.checked > td,
+.table > tbody > tr.checked > td,
+.table > tfoot > tr.checked > td,
+.table > thead > tr.checked > th,
+.table > tbody > tr.checked > th,
+.table > tfoot > tr.checked > th {
+  background-color: #ECCE41;
+}
+.table-hover > tbody > tr > td.mouse:hover,
+.table-hover > tbody > tr > th.mouse:hover,
+.table-hover > tbody > tr.mouse:hover > td,
+.table-hover > tbody > tr:hover > .mouse,
+.table-hover > tbody > tr.mouse:hover > th {
+  background-color: #F3E086;
+}
+</style>
+{%endblock%}
+{%block embedpage %} 
+<!-- 一、header -->
+<!-- row -->
+<div class="row">
+    <div class="col-lg-12" >
+        <!-- page-header完畢後，在mobile可看到hr -->
+        <h1 class="page-header">
+            Cloud drive <small>Storage Overview</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li>
+                <i class="fa fa-fw fa-home"></i>  <a href="/">Home</a>
+            </li>
+            <li class="active">
+                <i class="fa fa-fw fa-cloud"></i> Cloud drive
+            </li>
+        </ol>
+    </div>
+</div>
+<!-- /.row -->
+<!-- ==================== -->
+<!-- 二、上傳 -->
+{% if user %}
+<!-- 唯有登入狀態，才能啟用後續服務 -->
+    <div class="row">
+        <div class="col-lg-6">
+        <div class="well">
+            <table border="0">
+                <tbody>
+                    <tr>
+                        <!-- 操作按鈕 -->
+                        <td class="col-lg-3">
+                        <div class="btn-group ">
+                            <form action="/delete" method="post">
+                                <input id="delete_array" type="hidden" name="key">
+                                <span id="delete" class="btn btn-default btn-del">
+                                    <span class="glyphicon glyphicon-trash ">
+                                        <input type="submit" value="Delete" >
+                                        <span id="delete_count" class="badge"></span>
+                                    </span>
+                                </span>
+                            </form>
+                        </div>
+                        </td>
+                        <!-- 預覽方式 -->
+                        <td class="col-lg-3" align="right">
+                        <div class="btn-group"  >
+                            <button type="button" class="btn btn-default">
+                                <i class="fa fa-list-ul"></i>
+                            </button>
+                            <button type="button" class="btn btn-default">
+                                <i class="fa fa-th"></i>
+                            </button>
+                        </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>        
+        </div> 
+        <div class="col-lg-6">
+        <div class="well">
+    	<!--表單 :觸發python上傳動作 -->
+        	<form id="form" action="{{upload_url}}" method="POST" enctype="multipart/form-data">
+                <!--舊的作法-->
+                <!--
+                <input type="file" title="test" class=" "name="file" multiple="multiple" class="btn btn-default">             
+                <input type="submit" name="submit" value="Submit">
+                -->
+                <!--新的作法-->                     
+                <div class="btn-group ">
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <span class="btn btn-danger btn-file">
+                                <span class="glyphicon glyphicon-search"></span>
+                                Browse <input type="file" name="file" multiple>
+                            </span>
+                            <button type="submit" name="submit" value="Submit" class="btn btn-danger">
+                                <span class="glyphicon glyphicon-open"></span>
+                            </button>
+                        </span>
+                        <input type="text" class="form-control" readonly>
+                    </div>
+                </div>
+            </form>
+        </div>      
+        </div> 
+    </div>
+    <!-- /.row -->
+{% else %}
     <div class="row">
         <div class="col-lg-12">
-            <!-- page-header完畢後，在mobile可看到hr -->
-            <h1 class="page-header">
-                Dashboard <small>Statistics Overview</small>
-            </h1>
-            <!-- breadcrumb:麵包屑 -->
-            <ol class="breadcrumb">
-                <li class="active">
-                    <i class="fa fa-dashboard"></i> Dashboard
-                </li>
-            </ol>
+            <div class="alert alert-info alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <i class="fa fa-info-circle"></i>  
+                <strong>One account. All of Google.</strong>
+                Sign in to continue to Cloud drive.
+            </div>
         </div>
     </div>
     <!-- /.row -->
+{% endif %}
+<!-- ======== -->
+<!-- 三、明細 -->
+<div class="row">
+    <div class="col-lg-12">       
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                        <th>
+                            <input type="checkbox" id="select_all">
+                        </th>
+                        <th>Title</th>
+                        <th>Size</th>
+                        <th>Last modified</th>
+                        <th>Owner</th>
+                    </tr>
+                </thead>
+                <tbody>
+					<!-- 1.tbody:blob沒有任何檔案時，則顯示以下訊息 -->
+					{% if not wrappers %}
+						<tr>
+                            <td>-</td>
+							<td>Null</td>
+							<td>-</td>
+							<td>-</td>
+							<td>-</td>
+						</tr>
+					{% endif %}
+					<!-- 2.tbody:已經有人上傳檔案至blob時，則顯示以下訊息 -->
+					{% for wrapper in wrappers %}
+                        <!-- 多選刪除權限 -->                                      
+                        {% ifequal wrapper.user user %}
+                        <tr id="check_box" class="mouse">
+                            <td><input type="checkbox" class="select"></td>
+                        {% else %}
+                        <tr>  
+                            <td>-</td>
+                        {% endifequal %}
 
-	{% if user %}
-    <!-- 唯有登入狀態，才能啟用後續服務 -->
-		<h3>Upload</h3>
-		<!--表單 :觸發python上傳動作 -->
-		<form id="form" action="{{upload_url}}" method="POST" enctype="multipart/form-data">
-			<!--選擇檔案-->
-			<input type="file" name="file">
-			<!--送出-->
-			<input type="submit" name="submit" value="Submit">
-		</form>
-	{% else %}
-		Not logged in - <a href="/account">log in</a>
-	{% endif %}
+                            <!-- 1.檔案名稱 -->
+							<td><a href="/serve/{{wrapper.blob.key}}">{{wrapper.blob.filename}}</a></td>
+							<!-- 2.檔案大小 -->
+							<td>{{ wrapper.blob.size|countByte }}</td>
+							<!-- 3.上傳時間 -->
+							<td>{{wrapper.date|date:"D d M Y g:i:s A"}}</td>
+							<!-- 4.上傳作者 -->
+							<td>
+								<!--如果你是該上傳者，才具有刪除權限 -->
+								{% ifequal wrapper.user user %}
+									you
+                                    <input type="hidden" class="key" value="{{wrapper.key}}">
+								{% else %}
+									<small>
+										{{wrapper.user.email}}
 
-	<ul>
-		<h3><div class="head3">我的雲端硬碟</div></h3>
-		<!--blob沒有任何檔案時，則顯示以下訊息-->
-		{% if not wrappers %}
-			No files have been uploaded
-		{% endif %}
-		<!--依序列出blob的檔案 -->
-		<table border=1>
-			<tr>
-				<th class="tableheader">檔案名稱</th>
-				<th class="tableheader">檔案大小</th>
-				<th class="tableheader">上傳時間</th>
-				<th class="tableheader">上傳作者</th>
-				<th class="tableheader">刪除檔案</th>
-            </tr>
-		{% for wrapper in wrappers %}
-			<tr>
-				<!-- 1.檔案名稱 -->
-				<td><a href="/serve/{{wrapper.blob.key}}">{{wrapper.blob.filename}}</a></td>
-				<!-- 2.檔案大小 -->
-				<td>{{ wrapper.blob.size|countByte }}</td>
-				<!-- 3.上傳時間 -->
-				<td>{{wrapper.date|date:"D d M Y g:i:s A"}}</td>
-				<!-- 4.上傳作者 -->
-				<td>
-					<!--如果你是該上傳者，才具有刪除權限 -->
-					{% ifequal wrapper.user user %}
-						you
-					{% else %}
-						<small>
-							{{wrapper.user.email}}
-						</small>
-					{% endifequal %}
-				</td>
-				<td>
-					{% ifequal wrapper.user user %}
-						<form action="/delete" method="post">
-						<input type="hidden" name="key" value="{{wrapper.key}}">
-						<input type="submit" value="Delete">
-					{% endifequal %}
-				</td>
-		{% endfor %}
-		<table>
-	</ul>
+									</small>
+								{% endifequal %}
+							</td>
+						</tr>
+					{% endfor %}
+                 </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- /.row -->
 
-	<hr>
+{%endblock%}
+{%block extra-jquery-import %}
+<script src="/modules/index.js"></script>
+<script type="text/javascript">
+// === form操作 ===
+$(document).ready(function() {
+    /* === 核取方塊操作 === */
+    //計算check的數量
+    checked_count=0;
+    function is_all() {
+        if ( checked_count == $(".select").length ){
+            $("#select_all").prop("checked",true);            
+        }else{
+            $("#select_all").prop("checked",false);           
+        }
+    }
+    //全選、全取消
+    $("#select_all").click(function() { 
+        if($("#select_all").prop("checked")){
+            $("input[class='select']").prop("checked", true);
+            checked_count = $(".select").length;   
+            check_del();
+        }
+        else{
+            $("input[class='select']").prop("checked", false);
+            checked_count = 0;
+            check_del();
+        }       
+    });
+    //單一選項點擊事件
+    $(".select").click(function() {        
+        if( $(this).prop("checked") ){
+            checked_count++;
+            
 
-	<!-- 雲端空間使用情形 -->
-	<h3><div class="head3">已經使用</divc></h3>
-	<div >{{wrapper_total_size|countByte}}</div>
+        }else{
+            checked_count--;
+        }
+        is_all(); 
+        check_del();
+    });
 
-	<table bgcolor="#d3d3d3">
-	<tr>
-	<td width=100% bgcolor="#d3d3d3">
-	<div class="progress">
-	  <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">60% </div>
-	</div>
-	</td>
-	</tr>
-	</table>
- {%endblock%}
+    /* === 刪除操作 === */
+    $("span[id='delete']").hide();    
+    function check_del() {
+         if ( checked_count > 0 ){
+            $("span[id='delete']").show();
+            $("span[id='delete_count']").html(checked_count);
+
+            //刪除對象紀錄
+            var keys =[];
+            for(i=0;i<=$(".select").length; i++){
+                if($(".select").eq(i).prop("checked")){
+                    //
+                    $("tr[id='check_box']").eq(i).removeClass("mouse" );
+                    $("tr[id='check_box']").eq(i).addClass("checked" );
+
+                    //陣列存取
+                    keys.push( $("input[class='key']").eq(i).prop("value") );
+                    $("input[id='delete_array']").prop('value', keys);
+
+                }
+                else{
+                    $("tr[id='check_box']").eq(i).removeClass("checked" );
+                    $("tr[id='check_box']").eq(i).addClass("mouse" );
+                } 
+            }
+            //alert(keys);
+
+         }else{
+            $("span[id='delete']").hide();
+         }
+    }
+
+});
+</script>
+
+
+{%endblock%}

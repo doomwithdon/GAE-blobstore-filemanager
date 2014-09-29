@@ -1,18 +1,7 @@
 {%extends "template/base.html" %}
 {%block extra-css-import %}
-    <link href="/modules/home.css" rel="stylesheet">
-    <link href="/modules/animate.css" rel="stylesheet">
-
-    <style type="text/css">
-        .fadeInUp {
-            -webkit-animation-delay: 1s; /* Chrome, Safari, Opera */
-            animation-delay: 1s;
-        }
-        .zoomInDown {
-            -webkit-animation-delay: 1.5s; /* Chrome, Safari, Opera */
-            animation-delay: 1.5s;
-        }
-    </style>
+<link href="/modules/home.css" rel="stylesheet">
+<link href="/modules/animate.css" rel="stylesheet">
 {%endblock%}
 <!-- ====================== -->
 {%block embedpage %}
@@ -20,8 +9,8 @@
     <!-- home-header start -->
     <div class="home-header animated fadeInDown">
       <div class="wrapper header-wrapper "></div>
-      <div class="cloud animated fadeInUp"></div>
-      <div class="gae-drive-logo animated zoomInDown"></div>
+      <div class="cloud animated fadeInUp delay-1000ms"></div>
+      <div class="gae-drive-logo animated zoomInDown delay-1500ms"></div>
 
     </div>
     </div>
@@ -44,10 +33,10 @@
                 <div class="col-lg-10 col-lg-offset-1">
                     <h2>Services</h2>
                     <hr class="small">
-                    <div class="row">
+                    <div class="row service-items">
                         <div class="col-md-3 col-sm-6">
                             <div class="service-item">
-                                <img src="images/pc.png" class="fa-stack fa-4x">
+                                <img src="images/pc.png" class="fa-stack fa-4x pic">
                                 <h4>
                                     <strong>PC</strong>
                                 </h4>
@@ -99,4 +88,22 @@
   </div>
 {%endblock%}
 {%block extra-jquery-import %}
+<script src="/modules/jquery.timers.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    var add_effect = function () {
+        $( this ).children("img").addClass( "animated zoomInOut" );
+        $( this ).children("h4").addClass( "animated fadeInUp" );
+        $( this ).addClass( "highlight shadow" );
+    }
+    var remove_effect = function () {
+        $( this ).children("img").removeClass( "animated zoomInOut" );
+        $( this ).children("h4").removeClass( "animated fadeInUp" );
+        $( this ).removeClass( "highlight shadow" );
+    }
+    $( "div[class='service-item']" ).hover( add_effect, remove_effect );
+
+
+});
+</script>
 {%endblock%}
