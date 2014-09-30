@@ -1,0 +1,40 @@
+版本:0.1.2.3
+=============
+<h2>
+版本維護日誌</h2>
+<h2>
+一、Optimization</h2>
+<div>
+<ol>
+<li>&nbsp;checkbox，已可多選刪除</li>
+<li>&nbsp;checkbox，善用JQuery，令Html元件與CSS效果連結，增強視覺效果</li>
+<li>&nbsp;home，服務項目新增動畫效果</li>
+</ol>
+</div>
+<div>
+<div style="background-color: white; box-sizing: border-box; color: #333333; font-family: 'Helvetica Neue', Helvetica, 'Segoe UI', Arial, freesans, sans-serif; font-size: 16px; line-height: 25.6000003814697px;">
+<h2 style="border-bottom-color: rgb(238, 238, 238); border-bottom-style: solid; border-bottom-width: 1px; box-sizing: border-box; font-size: 1.75em; line-height: 1.225; margin-bottom: 16px; margin-top: 1em; padding-bottom: 0.3em; position: relative;">
+<span style="background-color: transparent;">二、Misson</span></h2>
+</div>
+</div>
+<div>
+<ol>
+<li>charts的統計圖必須重新思考使用者需求角度</li>
+</ol>
+</div>
+<div>
+</div>
+<div>
+<div>
+<h2>
+三、Review</h2>
+</div>
+<div>
+<ol>
+<li>解讀CSS過程中，逐漸知道CSS動畫描述架構</li>
+<li>使用JQuery強化前端的過程，對於JQuery逐漸熟練</li>
+</ol>
+<div>
+</div>
+</div>
+</div>
