@@ -5,6 +5,8 @@ from models import *
 import logging
 
 import urllib
+import datetime
+import methods
 
 from google.appengine.api import users
 from google.appengine.ext import db,blobstore, webapp
@@ -16,17 +18,30 @@ class Upload_Handler(blobstore_handlers.BlobstoreUploadHandler):
     def post(self):
         try:
             #接收前端form的檔案
-            upload_files = self.get_uploads('file')          
+            upload_files = self.get_uploads('file')        
+            total_size = 0 
             if len(upload_files) > 0:   
                 logging.info(upload_files)
                 for blob_info in upload_files :
+                    #進行Wrapper寫入作業
                     blob_key = blob_info.key() #註冊key
                     blob_filename = str(blob_info.filename) #取得filename 
                     blob_content_type = str(blob_info.content_type) #取得檔案類型
-                    logging.info(blob_content_type)
+                    #logging.info(blob_content_type) #測試
                     Wrapper(blob=blob_key,
                             filename=blob_filename,
                             content_type=blob_content_type).put()
+                    #計算檔案總大小
+                    total_size += blob_info.size
+            #計算完畢後，進行Upload_log寫入作業
+            now = datetime.datetime.now().date()
+            log_info = methods.load_log("Upload_log",now)
+            log_info.Usage_Bandwidth += total_size
+            log_info.put()
+            #Bandwidth_log更新作業
+            log_info = methods.load_log("Bandwidth_log","Quota")
+            log_info.Upload_Bandwidth -= total_size
+            log_info.put()
             self.redirect('/clouddrive')
         except CapabilityDisabledError:
             self.response.out.write('Uploading disabled')
@@ -39,7 +54,15 @@ class Serve_Handler(blobstore_handlers.BlobstoreDownloadHandler):
     def get(self, resource):
         resource = str(urllib.unquote(resource))
         blob_info = blobstore.BlobInfo.get(resource)
-        #logging.info(blob_info.filename)
+        #計算完畢後，進行Download_log寫入作業
+        now = datetime.datetime.now().date()
+        log_info = methods.load_log("Download_log",now)
+        log_info.Usage_Bandwidth += blob_info.size
+        log_info.put()
+        #Bandwidth_log更新作業
+        log_info = methods.load_log("Bandwidth_log","Quota")
+        log_info.Download_Bandwidth -= blob_info.size
+        log_info.put()
         self.send_blob(blob_info,save_as=True)
 
 
@@ -68,10 +91,10 @@ class Delete_Handler(webapp2.RequestHandler):
 
 
 #GOOGLE帳戶登入
-#('/account', Account_Handler)
+#('/account/([^/]+)?', Account_Handler)
 class Account_Handler(webapp2.RequestHandler):
-    def get(self):
+    def get(self, loginout_url):
         if users.get_current_user():
-            self.redirect(users.create_logout_url('/clouddrive'))
+            self.redirect(users.create_logout_url('/' + loginout_url ))
         else:
-            self.redirect(users.create_login_url('/clouddrive'))
+            self.redirect(users.create_login_url('/' + loginout_url ))

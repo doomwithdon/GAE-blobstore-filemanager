@@ -102,17 +102,6 @@
 /* === footer end === */
 /* ====================================================== */
 /* ===  自訂效果  === */
-/* ===  自訂延遲  === */
-.delay-1000ms {
-    -webkit-animation-delay: 1s; /* Chrome, Safari, Opera */
-    animation-delay: 1s;
-}
-.delay-1500ms {
-    -webkit-animation-delay: 1.5s; /* Chrome, Safari, Opera */
-    animation-delay: 1.5s;
-}
-/* ===  自訂延遲  === */
-
 .highlight{
     background-color: #c6dcef;
     -webkit-transition: background-color 0.5s; /* For Safari 3.1 to 6.0 */

@@ -1,6 +1,7 @@
 # -*- coding:UTF-8 -*-
 from google.appengine.ext import db,blobstore
 
+
 # 在DB內創造一個資料表
 class Wrapper(db.Model):
     #1.上傳者
@@ -21,3 +22,10 @@ class Bandwidth_log(db.Model):
         #調用父類別
         super(Bandwidth_log,self).put()
 
+class Upload_log(db.Model):
+    Usage_Bandwidth = db.IntegerProperty()
+    date = db.DateProperty()
+
+class Download_log(db.Model):
+    Usage_Bandwidth = db.IntegerProperty()
+    date = db.DateProperty()

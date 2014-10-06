@@ -49,6 +49,26 @@
 <!-- 二、上傳 -->
 {% if user %}
 <!-- 唯有登入狀態，才能啟用後續服務 -->
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="alert alert-info alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <i class="fa fa-info-circle"></i>  
+                <a href="/dashboard" class="alert-link"><strong>Simple Quota Details</strong></a>:
+                <i class="fa fa-database"></i>
+                ({{stored_data_details.Total_usage|countByte}} / 5GB , 
+                {{stored_data_details.Total_usage|percentage:"Blob" }}) / 
+                <i class="fa fa-cloud-upload"></i> 
+                ({{ Bandwidth_log.Upload_Bandwidth|countByte}} / 1GB , 
+                {{ Bandwidth_log.Upload_Bandwidth|percentage:"Bandwidth" }}) / 
+                <i class="fa fa-cloud-download"></i>
+                ({{ Bandwidth_log.Download_Bandwidth|countByte}} / 1GB , 
+                {{ Bandwidth_log.Download_Bandwidth|percentage:"Bandwidth" }})
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->
     <div class="row">
         <div class="col-lg-6">
         <div class="well">
@@ -88,13 +108,7 @@
         <div class="col-lg-6">
         <div class="well">
     	<!--表單 :觸發python上傳動作 -->
-        	<form id="form" action="{{upload_url}}" method="POST" enctype="multipart/form-data">
-                <!--舊的作法-->
-                <!--
-                <input type="file" title="test" class=" "name="file" multiple="multiple" class="btn btn-default">             
-                <input type="submit" name="submit" value="Submit">
-                -->
-                <!--新的作法-->                     
+        	<form id="form" action="{{upload_url}}" method="POST" enctype="multipart/form-data">                   
                 <div class="btn-group ">
                     <div class="input-group">
                         <span class="input-group-btn">

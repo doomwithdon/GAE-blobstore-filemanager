@@ -1,0 +1,4 @@
+cron:
+- description: Quotas reset
+  url: /quotas_reset
+  schedule: every day 07:00

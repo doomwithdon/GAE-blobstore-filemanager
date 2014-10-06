@@ -1,0 +1,273 @@
+{%extends "template/base.html" %}
+{%block extra-css-import %}
+<link href="/modules/animate.css" rel="stylesheet">
+<link href="/modules/animation-delay.css" rel="stylesheet">
+<style type="text/css">
+.hidden{
+    display:none;
+}
+</style>
+{%endblock%}
+{%block embedpage %}
+<div class="row">
+    <div class="col-lg-12" >
+        <!-- page-header完畢後，在mobile可看到hr -->
+        <h1 class="page-header">
+            Dashboard <small>Statistics Overview</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li>
+                <i class="fa fa-fw fa-home"></i>  <a href="/">Home</a>
+            </li>
+            <li class="active">
+                <i class="fa fa-fw fa-dashboard"></i> Dashboard
+            </li>
+        </ol>
+    </div>
+</div>
+<!-- 二、雲端空間使用情形 -->
+<!-- /.row -->
+<div class="row">
+    <div class="col-lg-12">
+        <h2>Quota Details</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th width="200px">Resource</th>
+                        <th>Quota</th>                        
+                        <th width="150px">Show</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="success">
+                        <td>
+                            <i class="fa fa-database"></i>                          
+                            Stored Data
+                        </td>
+                        <td>
+                            {{stored_data_details.Total_usage|countByte}} / 5GB ，
+                            {{stored_data_details.Total_usage|percentage:"Blob" }}
+                            <div class="progress">
+                              <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: {{ stored_data_details.Total_usage|percentage:"Blob" }};">         
+                              </div>
+                            </div>
+                        </td>  
+                        <td>   
+                            <button type="button" class="btn btn-lg btn-info" id="SDD">
+                                View Details <i class="fa fa-arrow-circle-right"></i>
+                            </button>
+                        </td>                             
+                    </tr>
+                    <!-- GAE:Incoming Bandwidth，客戶端上傳至雲端 -->
+                    <tr class="success">
+                        <td>
+                            <i class="fa fa-cloud-upload"></i> 
+                            Upload Bandwidth
+                        </td>
+                        <td>
+                            {{ Bandwidth_log.Upload_Bandwidth|countByte}} / 1GB ，
+                            {{ Bandwidth_log.Upload_Bandwidth|percentage:"Bandwidth" }}
+                            <div class="progress">
+                              <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: {{ Bandwidth_log.Upload_Bandwidth|percentage:"Bandwidth" }};">
+                                
+                              </div>
+                            </div>
+                        </td>  
+                        <td>   
+                            <button type="button" class="btn btn-lg btn-info" id="UBD">
+                                View Details <i class="fa fa-arrow-circle-right"></i>
+                            </button>
+                        </td> 
+                    </tr>
+                    <!-- GAE:Outgoing Bandwidth，雲端下載至客戶端 -->
+                    <tr class="success">
+                        <td>                            
+                            <i class="fa fa-cloud-download"></i>
+                            Download Bandwidth
+                        </td>
+                        <td>
+                            {{ Bandwidth_log.Download_Bandwidth|countByte}} / 1GB ，
+                            {{ Bandwidth_log.Download_Bandwidth|percentage:"Bandwidth" }}
+                            <div class="progress">
+                              <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: {{ Bandwidth_log.Download_Bandwidth|percentage:"Bandwidth" }};">
+                                
+                              </div>
+                            </div>
+                        </td>
+                        <td>   
+                            <button type="button" class="btn btn-lg btn-info" id="DBD">
+                                View Details <i class="fa fa-arrow-circle-right"></i>
+                            </button>
+                        </td>                                 
+                    </tr>
+                 </tbody>
+            </table>
+        </div>  
+    </div>
+</div> 
+<!-- Stored Data Details -->
+<div class="row" id="SDD">
+    <div class="col-lg-12">
+        <h2>Stored Data Details</h2>
+    </div>
+    <div class="col-lg-6">
+        <h3><i class="fa fa-table"></i> Table</h3>
+        <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Usage</th>
+                    <th>Percentage</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>You</td>
+                    <td>{{stored_data_details.Your_usage|countByte}}</td>
+                    <td>{{stored_data_details.Your_usage|percentage:"Blob"}}</td>
+                </tr>
+                <tr>
+                    <td>Else users</td>
+                    <td>{{stored_data_details.Else_users_usage|countByte}}</td>
+                    <td>{{stored_data_details.Else_users_usage|percentage:"Blob"}}</td>
+                </tr>
+                <tr>
+                    <td>No usage</td>
+                    <td>{{stored_data_details.No_usage|countByte}}</td>
+                    <td>{{stored_data_details.No_usage|percentage:"Blob"}}</td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+    </div>
+    <div class="col-lg-6" >
+
+        <h3><i class="fa fa-pie-chart"></i> Pie Chart</h3>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-long-arrow-right"></i>
+                    各用戶使用硬碟空間比例
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div id="piechart"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--  Upload Bandwidth Details-->
+<div class="row" id="UBD" >
+    <div class="col-lg-12">
+        <h2>Upload Bandwidth Details</h2>
+    </div>
+    <div class="col-lg-12">
+        <div id="UBD_chart"></div>
+    </div>
+</div>
+<!-- Download Bandwidth Details-->
+<div class="row" id="DBD">
+    <div class="col-lg-12">
+        <h2>Download Bandwidth Details</h2>
+    </div>
+    <div class="col-lg-12">
+        <div id="DBD_chart"></div>
+    </div>
+</div> 
+{%endblock%}
+{%block extra-jquery-import %}
+<!-- methods -->
+<script type="text/javascript">
+$(document).ready(function() {
+    $(window).load(function() {
+        all_hide();
+        $("div[id='SDD'] > div > h2").addClass("animated fadeInDown");
+    });
+    //alert();
+    //全隱藏
+    function all_hide(){
+        $("div[id='SDD']").hide();
+        $("div[id='UBD']").hide();
+        $("div[id='DBD']").hide();
+    }
+    //明細按鍵
+    $("button[id='SDD']").click(function() { 
+        all_hide();
+        $("div[id='SDD']").show();
+        details_resize();
+        
+    });
+    $("button[id='UBD']").click(function() { 
+        all_hide();
+        $("div[id='UBD']").show();
+        details_resize();
+
+    });
+    $("button[id='DBD']").click(function() { 
+        all_hide();
+        $("div[id='DBD']").show();
+        details_resize();
+    });
+});
+
+</script>
+<!--GOOGLE CHART -->
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript" src="/modules/dashboard.js"></script>
+<script type="text/javascript">
+    // === SDD_chart ===
+    var SDD_arrary = [
+      ['User'     , 'Usage'],
+      ['You'      , {{stored_data_details.Your_usage}}],
+      ['Else user', {{stored_data_details.Else_users_usage}}],
+      ['No usage' , {{stored_data_details.No_usage}}],
+    ];
+    // =================
+        var gb_line =[];
+        var gb =  1024 * 1024 * 1024;
+        for (i=1;i<=4;i++) {
+            number = 0.2 * i ;
+            gb_line[i-1]= gb*number;
+        }
+    // === UBD_chart ===
+    var UBD_arrary = [
+      {% for log in Upload_log %}
+        ["{{log.date|date:'Y-m-d'}}" ,
+         {{log.Usage_Bandwidth}},
+         "Used {{log.Usage_Bandwidth|countByte}} in {{log.date|date:'Y-m-d'}}",
+         gb_line[0], false, null,
+         gb_line[1], false, null,
+         gb_line[2], false, null,
+         gb_line[3], false, null],
+      {% endfor %}
+    ];
+
+    // === DBD_chart ===
+    var DBD_arrary = [
+      {% for log in Download_log %}
+        ["{{log.date|date:'Y-m-d'}}" ,
+         {{log.Usage_Bandwidth}},
+         "Used {{log.Usage_Bandwidth|countByte}} in {{log.date|date:'Y-m-d'}}",
+         gb_line[0], false, null,
+         gb_line[1], false, null,
+         gb_line[2], false, null,
+         gb_line[3], false, null],
+      {% endfor %}
+    ];
+    function details_resize(){
+        var SDD_width = $("div[class='panel-body']").width();
+        drawChart(SDD_arrary,"PieChart","piechart",SDD_width);
+
+        var UBD_width =$("div[id='UDB']").width()
+        drawChart(UBD_arrary,"AreaChart","UBD_chart",UBD_width);
+
+        var DBD_width =$("div[id='UDB']").width()
+        drawChart(DBD_arrary,"AreaChart","DBD_chart",DBD_width);
+    }
+    $(window).resize(function() {
+        details_resize();
+    });
+</script>
+{%endblock%}
+

@@ -8,15 +8,20 @@ register = webapp.template.create_template_register()
 
 @register.filter('countByte')
 def countByte(value):
-    value = int(value)
+    value = float(value)
+    unit  = ""
     if value < 1024 :
-      return str(value) + "Byte"
+      unit = "Byte"
     elif ( 1024 <= value ) and ( value < 1024**2 ) :
-      return str(value / 1024) + "KB"
+      value = value / (1024)
+      unit = "KB"
     elif ( 1024**2 <= value ) and ( value < 1024**3 ) :
-      return str(value / (1024**2)) + "MB"
+      value = value / (1024**2)
+      unit = "MB"   
     elif 1024**3 <= value :
-      return str(value / (1024**3)) + "GB"
+      value = value / (1024**3)
+      unit = "GB"
+    return str( math_chop(value,"normal") ) + unit
 
 @register.filter('percentage')
 def percentage(value,select):
@@ -26,12 +31,16 @@ def percentage(value,select):
     value = value / 5 #blobstore上限為5GB
   elif select =="bandwidth" :
     value = value / 1 #bandwidth上限為1GB
-  value =  math_chop(value)
+  value =  math_chop(value,"percentage")
   return str(value) + "%"
 
 #無條件捨去，只留到小數第二位
-def math_chop(value):
-  return math.floor ( value * 10000 ) /100
+def math_chop(value,select):
+  if select == "normal" :
+    return math.floor ( value * 100 ) /100
+  elif select == "percentage" :
+    return math.floor ( value * 10000 ) /100
+   
 
 #測試參數代入是否有效
 @register.filter('cut')

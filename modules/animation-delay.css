@@ -1,0 +1,9 @@
+/* ===  自訂延遲  === */
+.delay-1000ms {
+    -webkit-animation-delay: 1s; /* Chrome, Safari, Opera */
+    animation-delay: 1s;
+}
+.delay-1500ms {
+    -webkit-animation-delay: 1.5s; /* Chrome, Safari, Opera */
+    animation-delay: 1.5s;
+}

@@ -6,18 +6,17 @@
             <i class="fa fa-fw fa-home"></i>
             Home</a>
         </li>
+        <!-- Dashboard -->
+        <li class="{% if startup_web == "dashboard" %}active{% endif %}">
+            <a href="/dashboard">
+            <i class="fa fa-fw fa-dashboard"></i>
+            Dashboard</a>
+        </li>
         <!-- Cloud drive  -->
          <li class="{% if startup_web == "clouddrive" %}active{% endif %}">
             <a href="/clouddrive">
             <i class="fa fa-fw fa-cloud"></i>
             Cloud drive</a>
-        </li>
-
-        <!--
-        <li>
-            <a href="/charts">
-            <i class="fa fa-fw fa-bar-chart-o">
-            </i> Charts</a>
         </li>
         <!-- test  -->
         <!--
