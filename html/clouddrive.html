@@ -80,7 +80,7 @@
                         <div class="btn-group ">
                             <form action="/delete" method="post">
                                 <input id="delete_array" type="hidden" name="key">
-                                <span id="delete" class="btn btn-default btn-del">
+                                <span id="delete" class="btn btn-default btn-del" data-toggle="tooltip" data-placement="bottom" title="刪除">
                                     <span class="glyphicon glyphicon-trash ">
                                         <input type="submit" value="Delete" >
                                         <span id="delete_count" class="badge"></span>
@@ -90,16 +90,18 @@
                         </div>
                         </td>
                         <!-- 預覽方式 -->
+                        <!--
                         <td class="col-lg-3" align="right">
                         <div class="btn-group"  >
-                            <button type="button" class="btn btn-default">
+                            <button type="button" class="btn btn-default active" data-toggle="tooltip" data-placement="bottom" title="List" name="list_btn">
                                 <i class="fa fa-list-ul"></i>
                             </button>
-                            <button type="button" class="btn btn-default">
+                            <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Grid" name="grid_btn">
                                 <i class="fa fa-th"></i>
                             </button>
-                        </div>
+                        </div>                        
                         </td>
+                        -->
                     </tr>
                 </tbody>
             </table>
@@ -112,11 +114,11 @@
                 <div class="btn-group ">
                     <div class="input-group">
                         <span class="input-group-btn">
-                            <span class="btn btn-danger btn-file">
+                            <span class="btn btn-danger btn-file" data-toggle="tooltip" data-placement="bottom" title="Browse">
                                 <span class="glyphicon glyphicon-search"></span>
                                 Browse <input type="file" name="file" multiple>
                             </span>
-                            <button type="submit" name="submit" value="Submit" class="btn btn-danger">
+                            <button type="submit" name="submit" value="Submit" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="上傳" >
                                 <span class="glyphicon glyphicon-open"></span>
                             </button>
                         </span>
@@ -148,14 +150,13 @@
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead>
-                        <th>
-                            <input type="checkbox" id="select_all">
-                        </th>
-                        <th>Title</th>
-                        <th>Size</th>
-                        <th>Last modified</th>
-                        <th>Owner</th>
-                    </tr>
+                    <th>
+                        <input type="checkbox" class="select_all" name="list">
+                    </th>
+                    <th>Title</th>
+                    <th>Size</th>
+                    <th>Last modified</th>
+                    <th>Owner</th>
                 </thead>
                 <tbody>
 					<!-- 1.tbody:blob沒有任何檔案時，則顯示以下訊息 -->
@@ -180,7 +181,10 @@
                         {% endifequal %}
 
                             <!-- 1.檔案名稱 -->
-							<td><a href="/serve/{{wrapper.blob.key}}">{{wrapper.blob.filename}}</a></td>
+							<td >
+                                <i class="{{wrapper.blob.content_type|Content_Type}}"></i>
+                                <a href="/serve/{{wrapper.blob.key}}">{{wrapper.blob.filename}}</a>
+                            </td>
 							<!-- 2.檔案大小 -->
 							<td>{{ wrapper.blob.size|countByte }}</td>
 							<!-- 3.上傳時間 -->
@@ -206,42 +210,42 @@
     </div>
 </div>
 <!-- /.row -->
-
 {%endblock%}
 {%block extra-jquery-import %}
 <script src="/modules/index.js"></script>
 <script type="text/javascript">
 // === form操作 ===
 $(document).ready(function() {
+    $("button,span").tooltip();
     /* === 核取方塊操作 === */
     //計算check的數量
     checked_count=0;
     function is_all() {
         if ( checked_count == $(".select").length ){
-            $("#select_all").prop("checked",true);            
+            $(".select_all").prop("checked",true);            
         }else{
-            $("#select_all").prop("checked",false);           
+            $(".select_all").prop("checked",false);           
         }
     }
     //全選、全取消
-    $("#select_all").click(function() { 
-        if($("#select_all").prop("checked")){
+    $("input[class='select_all']").click(function() { 
+        if($(".select_all").prop("checked")){
             $("input[class='select']").prop("checked", true);
             checked_count = $(".select").length;   
             check_del();
+
         }
         else{
             $("input[class='select']").prop("checked", false);
             checked_count = 0;
             check_del();
-        }       
+        }  
+        console.log("test");     
     });
     //單一選項點擊事件
     $(".select").click(function() {        
         if( $(this).prop("checked") ){
             checked_count++;
-            
-
         }else{
             checked_count--;
         }
@@ -274,13 +278,26 @@ $(document).ready(function() {
                     $("tr[id='check_box']").eq(i).addClass("mouse" );
                 } 
             }
-            //alert(keys);
-
+            console.log(keys);
          }else{
             $("span[id='delete']").hide();
          }
     }
-
+    /* === === */
+    /*
+    $("button[name='list_btn']").click(function(){
+            $(this).addClass("active");
+            $("button[name='grid_btn']").removeClass("active");
+            $("input[name='list']").addClass("select_all");
+            $("input[name='grid']").removeClass("select_all");
+    });
+    $("button[name='grid_btn']").click(function(){
+            $(this).addClass("active" );
+            $("button[name='list_btn']").removeClass("active");
+            $("input[name='list']").removeClass("select_all");
+            $("input[name='grid']").addClass("select_all");
+    });
+    */
 });
 </script>
 
