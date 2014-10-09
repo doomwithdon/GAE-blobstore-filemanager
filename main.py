@@ -17,6 +17,7 @@ from google.appengine.ext.webapp import blobstore_handlers, template
 import methods
 from models import *
 from backend_process import *
+from cron import *
 #--------------------------------------------------------------------
 #對前端框架的模板語法註冊新功能
 webapp.template.register_template_library('filterdir.customfilters')
@@ -98,4 +99,6 @@ app = webapp2.WSGIApplication([
     ('/upload', Upload_Handler),
     ('/serve/([^/]+)?', Serve_Handler),
     ('/delete', Delete_Handler),
+    #排程
+    ('/quotas_reset', Quotas_Reset_Handler),
 ], debug=True)

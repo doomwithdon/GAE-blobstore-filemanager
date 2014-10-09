@@ -89,7 +89,6 @@
   </div>
 {%endblock%}
 {%block extra-jquery-import %}
-<script src="/modules/jquery.timers.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
     var add_effect = function () {
@@ -103,7 +102,9 @@ $(document).ready(function() {
         $( this ).removeClass( "highlight shadow" );
     }
     $( "div[class='service-item']" ).hover( add_effect, remove_effect );
+    
 
+    
 
 });
 </script>

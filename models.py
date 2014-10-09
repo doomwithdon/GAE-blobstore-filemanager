@@ -1,5 +1,9 @@
 # -*- coding:UTF-8 -*-
+
+#GAE的函式庫
+import webapp2
 from google.appengine.ext import db,blobstore
+
 
 
 # 在DB內創造一個資料表
