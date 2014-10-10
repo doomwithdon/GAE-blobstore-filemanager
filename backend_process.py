@@ -6,7 +6,10 @@ import logging
 
 import urllib
 import datetime
+import time
 import methods
+import csv
+from filterdir.customfilters import *
 
 from google.appengine.api import users
 from google.appengine.ext import db,blobstore, webapp
@@ -98,3 +101,23 @@ class Account_Handler(webapp2.RequestHandler):
             self.redirect(users.create_logout_url('/' + loginout_url ))
         else:
             self.redirect(users.create_login_url('/' + loginout_url ))
+
+#下載CSV
+#('/csv', CSV_Handler)
+class CSV_Handler(webapp2.RequestHandler):
+    def post(self):
+        log_Quota = None;
+        select_csv = self.request.get("download_csv")
+        self.response.headers['Content-Type'] = 'application/csv'
+        if select_csv == "UBD" :
+            Content_Disposition = 'attachment; filename=Upload_Bandwidth_Details ' +  str(datetime.datetime.now().date()) + '.csv'
+            self.response.headers['Content-Disposition'] = Content_Disposition
+            log_Quota = Upload_log.all().order('date')
+        elif select_csv == "DBD" :
+            Content_Disposition = 'attachment; filename=Download_Bandwidth_Details ' + str(datetime.datetime.now().date()) + '.csv'
+            self.response.headers['Content-Disposition'] = Content_Disposition
+            log_Quota = Download_log.all().order('date')
+        writer = csv.writer(self.response.out)
+        writer.writerow(["Date", "Usage(1)", "Usage(2)"])
+        for log in log_Quota :
+            writer.writerow([log.date,log.Usage_Bandwidth,countByte(log.Usage_Bandwidth)])

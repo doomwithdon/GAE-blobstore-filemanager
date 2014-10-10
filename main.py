@@ -6,6 +6,7 @@ import os
 import logging
 import datetime
 import time
+import csv
 
 #GAE的函式庫
 import webapp2
@@ -18,6 +19,7 @@ import methods
 from models import *
 from backend_process import *
 from cron import *
+from filterdir.customfilters import *
 #--------------------------------------------------------------------
 #對前端框架的模板語法註冊新功能
 webapp.template.register_template_library('filterdir.customfilters')
@@ -62,11 +64,11 @@ class Dashboard_Handler(webapp2.RequestHandler):
         Upload_log_Quota = Upload_log.all().order('date')#由舊到新
         Download_log_Quota = Download_log.all().order('date')#由舊到新
 
-        #logging.info("====================================")
-        #logging.info(datetime.datetime.now().date())
-        #t = time.time()
+        logging.info("====================================")
+        logging.info(datetime.datetime.now().date())
+        t = time.time()
         # 透過 datetime
-        #logging.info(datetime.datetime.fromtimestamp(t).strftime('%Y-%m-%d %H:%M:%S'))
+        logging.info(datetime.datetime.fromtimestamp(t).strftime('%Y-%m-%d %H:%M:%S'))
         values = {
             'user': users.get_current_user(),
             'users': users,
@@ -81,11 +83,13 @@ class Dashboard_Handler(webapp2.RequestHandler):
 
 class Test_Handler(webapp2.RequestHandler):
     def get(self):
-        values = {
-        }
-        
-        path = os.path.join(os.path.dirname(__file__), 'html','dashboard.htm')
-        self.response.out.write(template.render(path, values))
+        self.response.headers['Content-Type'] = 'application/csv'
+        self.response.headers['Content-Disposition'] = 'attachment; filename=test.csv'
+        writer = csv.writer(self.response.out)
+        Upload_log_Quota = Upload_log.all().order('date')
+        writer.writerow(["Date", "Usage(1)", "Usage(2)"])
+        for log in Upload_log_Quota :
+            writer.writerow([log.date,log.Usage_Bandwidth,countByte(log.Usage_Bandwidth)])
 
 #網址啟動
 app = webapp2.WSGIApplication([
@@ -99,6 +103,7 @@ app = webapp2.WSGIApplication([
     ('/upload', Upload_Handler),
     ('/serve/([^/]+)?', Serve_Handler),
     ('/delete', Delete_Handler),
+    ('/csv', CSV_Handler),
     #排程
     ('/quotas_reset', Quotas_Reset_Handler),
 ], debug=True)

@@ -107,7 +107,7 @@
     </div>
 </div> 
 <!-- Stored Data Details -->
-<div class="row" id="SDD">
+<div class="row" id="SDD" style="display:none">
     <div class="col-lg-12">
         <h2>Stored Data Details</h2>
     </div>
@@ -158,22 +158,30 @@
     </div>
 </div>
 <!--  Upload Bandwidth Details-->
-<div class="row" id="UBD" >
+<div class="row" id="UBD" style="display:none" >
     <div class="col-lg-12">
         <h2>Upload Bandwidth Details</h2>
     </div>
     <div class="col-lg-12">
         <div id="UBD_chart"></div>
     </div>
+    <form action="/csv" method="post">
+        <input type="submit" value="download csv">
+        <input type="hidden" name="download_csv" value="UBD">
+    </form>
 </div>
 <!-- Download Bandwidth Details-->
-<div class="row" id="DBD">
+<div class="row" id="DBD" style="display:none">
     <div class="col-lg-12">
         <h2>Download Bandwidth Details</h2>
     </div>
     <div class="col-lg-12">
         <div id="DBD_chart"></div>
     </div>
+    <form action="/csv" method="post">
+        <input type="submit" value="download csv">
+        <input type="hidden" name="download_csv" value="DBD">
+    </form>
 </div> 
 {%endblock%}
 {%block extra-jquery-import %}
