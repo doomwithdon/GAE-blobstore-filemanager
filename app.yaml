@@ -24,9 +24,6 @@ handlers:
 - url: /images
   static_dir: images
 
-#test
-
-
 #執行py必須放在最下面
 #否則前面的上傳一律無效
 - url: .*
@@ -37,3 +34,5 @@ libraries:
   version: "2.5.2"
 - name: jinja2
   version: "2.6"
+- name: django
+  version: "1.5"

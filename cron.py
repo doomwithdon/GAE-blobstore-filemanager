@@ -9,6 +9,3 @@ class Quotas_Reset_Handler(webapp2.RequestHandler):
 		                                Upload_Bandwidth = 1024**3,
 		                                Download_Bandwidth =1024**3)
 		Bandwidth_reset.put()
-		logging.info("＊＼／＼／＼／＼／＼／＼／＼／＼／＼／＼／＼／＼／＊")
-		logging.info("＊＝＝＝＝＝＝＝＝＝＝ＯＫ＝＝＝＝＝＝＝＝＝＝＝＝＊")
-		logging.info("＊＼／＼／＼／＼／＼／＼／＼／＼／＼／＼／＼／＼／＊")

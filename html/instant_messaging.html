@@ -1,0 +1,162 @@
+{%extends "template/base.html" %}
+{%block extra-css-import %}
+    <style type="text/css">
+    #interface {
+        background-image: url(images/chat_background.jpg); 
+        background-position: top center; 
+        background-repeat: no-repeat;　　//背景不重複
+        background-attachment: fixed; 　　//背景固定
+    }
+    #chat_wrapper{
+
+        margin-left: 1.5em;
+        margin-right: 1.5em;
+    }
+    #content { width: 100%; }
+    #msg {   
+        height :100%;
+        word-wrap: break-word;
+        word-break: break-all; 
+        overflow-y:scroll;
+        font-size:16px;
+    }
+    .chat_msg{
+        vertical-align: top;
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
+        margin-left: 0.5em;
+        margin-right: 0.5em;
+        padding:1em;
+        background-color: rgb(197,215,231);
+        border-top: 0px solid transparent;
+        box-shadow: 2px 2px 3px rgba(0,0,0,0.3);
+    }
+</style>
+{%endblock%}
+<!-- ====================== -->
+{%block embedpage %}
+
+<div class="row">
+    <div class="col-lg-12" >
+    <!--聊天方塊-->
+    <div id="interface">
+        <div id="chat_wrapper">
+        <div id="msg"></div>
+        <!--網頁主體-->
+        <div id="input">
+            <div><textarea id="content" rows="3" cols="60"></textarea></div>
+            <div class="top2em">
+                <button id="submit_msg">sumbit</button>
+                <strong>Notice:</strong>傳送訊息用<strong>Shift+Enter</strong>
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+</div>
+{%endblock%}
+{%block extra-jquery-import %}
+    <script src="/_ah/channel/jsapi"></script>
+    <script>
+        /*網頁本身的HTML載入後就觸發*/
+        $(document).ready(
+            function() {
+                /*逐一取得網頁物件id，例如內容、訊息等*/
+                var $content = $('#content');
+                var $msg = $('#msg');
+                var token;
+                
+                /*定義get_token*/
+                /*進入聊天室，給予外來者註記*/
+                function get_token() {
+                    $.get('/get_token', function(data){
+                        if (data) {
+                            <!--如果聊天室足以負載陌生訪客的數量，則開放給他們聊天室-->
+                            token = data;
+                            openChannel();
+                        } else {
+                            <!--否則告訴訪客，若能登入，不用受此限制-->
+                            $msg.prepend('<p>Sorry, this chat room has reached the capacity of anonymous users, you need <a href="/login">login</a> to join them.</p>');
+                        }
+                    });
+                }
+                get_token();
+
+                <!--定義onOpen-->
+                function onOpen() {
+                    $.post('/open', {'token': token});
+                }
+
+                <!--定義onMessage-->
+                function onMessage(m) {
+                    var message = $.parseJSON(m.data);
+                    <!--對特定文字將plain格式替換成HTML格式 -->
+                    message = message.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    $msg.append("<div class='chat_msg'>" + message + '</div>');
+                    
+                }
+
+                <!--定義openChannel-->
+                function openChannel() {
+                    var channel = new goog.appengine.Channel(token);
+                    var handler = {
+                      'onopen': onOpen,
+                      'onmessage': onMessage,
+                      'onerror': function() {},
+                      'onclose': function() {$msg.prepend('<p>Your session has expired, you can refresh this page to join the chat room again.</p>');} // you can reopen the channel here if token has expired
+                    };
+                    channel.open(handler);
+                }
+
+                function submit() {
+                    if (token) {
+                        <!--非同步的JavaScript與XML技術 -->
+                        $.ajax({
+                            <!--url:指定要進行呼叫的位址-->
+                            url: '/post_msg',
+                            <!--type:請求方式，POST/GET。-->
+                            type: 'POST',
+                            <!--data:傳送至Server的資料-->
+                            data: {'token': token, 'content': $content.val()}
+                        });
+                        <!--內容欄位清空-->
+                        $content.val('').focus();
+                    }
+                }
+
+                <!--當操作留言時，使用組合按鍵，也能讓內容傳送 -->
+                $content.keypress(function(e) {
+                    if (e.shiftKey && e.keyCode == 13) {
+                        submit();
+                        return false;
+                    }
+                });
+                <!--當按鍵按下時，啟動傳送-->
+                $('#submit_msg').click(submit);
+                
+                <!--beforeunload事件處理:偵測使用者刷新或關閉頁面進行一些處理-->
+                $(window).bind('beforeunload', function() {
+                    if (token)
+                        $.post('/del_token', {'token': token}); // it will take a risk of hack attack, you can use AJAX pull for tracking client connections instead
+                })
+
+                var interface_height;
+                $(window).load(function() {
+                    msg_resize();
+                });
+                $(window).resize(function() {
+                    msg_resize();
+                });
+                function msg_resize(){
+                    var input_height = $("#input").height();
+                    var collapse_height = $("div[class='collapse navbar-collapse navbar-ex1-collapse']").height();
+                    var msg_height = $(window).height() -input_height-collapse_height-30;
+                    $("#msg").height(msg_height);
+
+                    console.log($(window).height());
+                    console.log(document.documentElement.clientHeight);
+                }
+            }
+        );
+    </script>
+{%endblock%}

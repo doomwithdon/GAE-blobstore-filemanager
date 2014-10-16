@@ -18,8 +18,10 @@ from google.appengine.ext.webapp import blobstore_handlers, template
 import methods
 from models import *
 from backend_process import *
+from instant_messaging import *
 from cron import *
 from filterdir.customfilters import *
+
 #--------------------------------------------------------------------
 #對前端框架的模板語法註冊新功能
 webapp.template.register_template_library('filterdir.customfilters')
@@ -81,15 +83,18 @@ class Dashboard_Handler(webapp2.RequestHandler):
         path = os.path.join(os.path.dirname(__file__), 'html','dashboard.html')
         self.response.out.write(template.render(path, values))
 
+#('/instant_messaging', Instant_Messaging_Handler)
+class Instant_Messaging_Handler(webapp2.RequestHandler):
+    def get(self):
+        values = {
+            'startup_web':"instant_messaging",
+        }        
+        path = os.path.join(os.path.dirname(__file__), 'html','instant_messaging.html')
+        self.response.out.write(template.render(path, values))
+
 class Test_Handler(webapp2.RequestHandler):
     def get(self):
-        self.response.headers['Content-Type'] = 'application/csv'
-        self.response.headers['Content-Disposition'] = 'attachment; filename=test.csv'
-        writer = csv.writer(self.response.out)
-        Upload_log_Quota = Upload_log.all().order('date')
-        writer.writerow(["Date", "Usage(1)", "Usage(2)"])
-        for log in Upload_log_Quota :
-            writer.writerow([log.date,log.Usage_Bandwidth,countByte(log.Usage_Bandwidth)])
+        pass
 
 #網址啟動
 app = webapp2.WSGIApplication([
@@ -99,11 +104,17 @@ app = webapp2.WSGIApplication([
     ('/dashboard', Dashboard_Handler),
     ('/account/([^/]+)?', Account_Handler),
     ('/test1', Test_Handler),
+    ('/instant_messaging', Instant_Messaging_Handler),
     #後端處理
     ('/upload', Upload_Handler),
     ('/serve/([^/]+)?', Serve_Handler),
     ('/delete', Delete_Handler),
     ('/csv', CSV_Handler),
+    #即時通功能
+    ('/post_msg', ReceiveHandler),
+    ('/get_token', GetTokenHandler),
+    ('/del_token', ReleaseTokenHandler),
+    ('/open', OpenHandler),
     #排程
     ('/quotas_reset', Quotas_Reset_Handler),
 ], debug=True)
