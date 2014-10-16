@@ -92,6 +92,15 @@ class Instant_Messaging_Handler(webapp2.RequestHandler):
         path = os.path.join(os.path.dirname(__file__), 'html','instant_messaging.html')
         self.response.out.write(template.render(path, values))
 
+#('/paint', Paint_Handler)
+class Paint_Handler(webapp2.RequestHandler):
+    def get(self):
+        values = {
+            'startup_web':"paint",
+        }
+        path = os.path.join(os.path.dirname(__file__), 'html','paint.html')
+        self.response.out.write(template.render(path, values))
+
 class Test_Handler(webapp2.RequestHandler):
     def get(self):
         pass
@@ -105,6 +114,7 @@ app = webapp2.WSGIApplication([
     ('/account/([^/]+)?', Account_Handler),
     ('/test1', Test_Handler),
     ('/instant_messaging', Instant_Messaging_Handler),
+    ('/paint', Paint_Handler),
     #後端處理
     ('/upload', Upload_Handler),
     ('/serve/([^/]+)?', Serve_Handler),
