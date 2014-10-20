@@ -29,7 +29,7 @@
 版本紀錄總覽</h2>
 <div>
 <h3>
-<span style="font-size: large;">　</span>一、<a href="https://github.com/PenguinSir2000/GAE-blobstore/blob/master/README.md">master</a>，初始專案</h3>
+<span style="font-size: large;">　</span>一、<a href="https://github.com/PenguinSir2000/GAE-blobstore/blob/master/README.md">master</a>(初始專案)</h3>
 <h3>
 <span style="font-size: large;">　</span>二、<a href="https://github.com/PenguinSir2000/GAE-blobstore/blob/0.0.0.1/README.md">0.0.0.1</a></h3>
 </div>
