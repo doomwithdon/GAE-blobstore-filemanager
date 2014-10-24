@@ -60,6 +60,8 @@
 <span style="font-size: large;">　</span>十四、<a href="https://github.com/PenguinSir2000/GAE-blobstore/blob/0.3.0.0/README.md">0.3.0.0</a>(新增即時通)</h3>
 <h3>
 <span style="font-size: large;">　</span>十五、<a href="https://github.com/PenguinSir2000/GAE-blobstore/blob/0.4.0.0/README.md">0.4.0.0</a>(新增塗鴉板)</h3>
+<h3>
+<span style="font-size: large;">　</span>十六、<a href="https://github.com/PenguinSir2000/GAE-blobstore/blob/1.0.0.0/README.md">1.0.0.0</a>(正式版)</h3>
 <div>
 </div>
 
