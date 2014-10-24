@@ -30,6 +30,7 @@ webapp.template.register_template_library('filterdir.customfilters')
 class Home_Handler(webapp2.RequestHandler):
     def get(self):
         values = {
+            'user': users.get_current_user(),
             'startup_web':"home",
         }        
         path = os.path.join(os.path.dirname(__file__), 'html','home.html')
@@ -87,6 +88,7 @@ class Dashboard_Handler(webapp2.RequestHandler):
 class Instant_Messaging_Handler(webapp2.RequestHandler):
     def get(self):
         values = {
+            'user': users.get_current_user(),
             'startup_web':"instant_messaging",
         }        
         path = os.path.join(os.path.dirname(__file__), 'html','instant_messaging.html')
@@ -96,6 +98,7 @@ class Instant_Messaging_Handler(webapp2.RequestHandler):
 class Paint_Handler(webapp2.RequestHandler):
     def get(self):
         values = {
+            'user': users.get_current_user(),
             'startup_web':"paint",
         }
         path = os.path.join(os.path.dirname(__file__), 'html','paint.html')

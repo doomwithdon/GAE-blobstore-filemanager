@@ -17,9 +17,9 @@
 <div id="dPallete"></div>
 <div id="dLine"></div>
 <div id="dCanvas">
-<canvas id="cSketchPad" width="300" height="300" style="border: 2px solid gray" />
+<canvas id="cSketchPad" width="600" height="600" style="border: 2px solid gray" />
 </div>
-<input type="button" id="bGenImage" value="Generate Image" />
+<input type="button" id="bGenImage btn btn-default" value="Generate Image" />
 <div id="dOutput"></div>
 {%endblock%}
 {%block extra-jquery-import %}
@@ -89,6 +89,8 @@
                     "class": "output"
                 }));
             });
+
+
         });
     </script>
 {%endblock%}

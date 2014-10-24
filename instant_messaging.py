@@ -2,7 +2,6 @@
 from random import choice
 from django.utils import simplejson
 from google.appengine.api import channel, memcache, users
-from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import webapp
 import logging
 

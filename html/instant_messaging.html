@@ -8,7 +8,6 @@
         background-attachment: fixed; 　　//背景固定
     }
     #chat_wrapper{
-
         margin-left: 1.5em;
         margin-right: 1.5em;
     }
@@ -45,8 +44,8 @@
         <!--網頁主體-->
         <div id="input">
             <div><textarea id="content" rows="3" cols="60"></textarea></div>
-            <div class="top2em">
-                <button id="submit_msg">sumbit</button>
+            <div>
+                <button id="submit_msg" class="btn btn-default">sumbit</button>
                 <strong>Notice:</strong>傳送訊息用<strong>Shift+Enter</strong>
             </div>
         </div>
@@ -82,21 +81,21 @@
                 }
                 get_token();
 
-                <!--定義onOpen-->
+                /*定義onOpen*/
                 function onOpen() {
                     $.post('/open', {'token': token});
                 }
 
-                <!--定義onMessage-->
+                /*定義onMessage*/
                 function onMessage(m) {
                     var message = $.parseJSON(m.data);
-                    <!--對特定文字將plain格式替換成HTML格式 -->
+                    /*對特定文字將plain格式替換成HTML格式*/
                     message = message.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
                     $msg.append("<div class='chat_msg'>" + message + '</div>');
                     
                 }
 
-                <!--定義openChannel-->
+                /*定義openChannel*/
                 function openChannel() {
                     var channel = new goog.appengine.Channel(token);
                     var handler = {
@@ -110,31 +109,31 @@
 
                 function submit() {
                     if (token) {
-                        <!--非同步的JavaScript與XML技術 -->
+                        /*非同步的JavaScript與XML技術*/
                         $.ajax({
-                            <!--url:指定要進行呼叫的位址-->
+                            /*url:指定要進行呼叫的位址*/
                             url: '/post_msg',
-                            <!--type:請求方式，POST/GET。-->
+                            /*type:請求方式，POST/GET。*/
                             type: 'POST',
-                            <!--data:傳送至Server的資料-->
+                            /*data:傳送至Server的資料*/
                             data: {'token': token, 'content': $content.val()}
                         });
-                        <!--內容欄位清空-->
+                        /*內容欄位清空*/
                         $content.val('').focus();
                     }
                 }
 
-                <!--當操作留言時，使用組合按鍵，也能讓內容傳送 -->
+                /*當操作留言時，使用組合按鍵，也能讓內容傳送*/
                 $content.keypress(function(e) {
                     if (e.shiftKey && e.keyCode == 13) {
                         submit();
                         return false;
                     }
                 });
-                <!--當按鍵按下時，啟動傳送-->
+                /*當按鍵按下時，啟動傳送*/
                 $('#submit_msg').click(submit);
                 
-                <!--beforeunload事件處理:偵測使用者刷新或關閉頁面進行一些處理-->
+                /*beforeunload事件處理:偵測使用者刷新或關閉頁面進行一些處理*/
                 $(window).bind('beforeunload', function() {
                     if (token)
                         $.post('/del_token', {'token': token}); // it will take a risk of hack attack, you can use AJAX pull for tracking client connections instead
@@ -153,8 +152,8 @@
                     var msg_height = $(window).height() -input_height-collapse_height-30;
                     $("#msg").height(msg_height);
 
-                    console.log($(window).height());
-                    console.log(document.documentElement.clientHeight);
+                    //console.log($(window).height());
+                    //console.log(document.documentElement.clientHeight);
                 }
             }
         );
