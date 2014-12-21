@@ -11,6 +11,7 @@
 	</head>
 	<body>
 		{% if user %}
+		{% ifequal user.email "aldon84@gmail.com" %}
 			Currently logged in as {{user.email}} - <a href="/account">log out</a>
 
 			<h3>Upload</h3>
@@ -18,9 +19,12 @@
 				<input type="file" name="file">
 				<input type="submit" name="submit" value="Submit">
 			</form>
+		{% endifequal %}
 		{% else %}
 			Not logged in - <a href="/account">log in</a>
 		{% endif %}
+		{% if user %}
+		{% ifequal user.email "aldon84@gmail.com" %}
 		<h3>Files</h3>
 		<ul>
 		{% if not wrappers %}
@@ -41,6 +45,8 @@
 		</ul>
 		
 
-		<form>
+		</form>
+		{% endifequal %}
+		{% endif %}
 	</body>
 </html>
